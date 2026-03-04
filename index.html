@@ -4,162 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Der lächelnde Fux | remosmiles</title>
-    <meta name="description" content="Willkommen auf der offiziellen Website von remosmiles - Der lächelnde Fux auf YouTube! Erlebe epische Siege und gute Laune.">
-    
     <style>
         :root {
-            --fux-orange: #ff8c00;
-            --fux-dark: #e67e22;
-            --bg-color: #f9f9fb;
-            --text-color: #2d3436;
+            --neon-orange: #ff8c00;
+            --neon-cyan: #00f2ff;
+            --neon-purple: #bc13fe;
+            --dark-bg: #0a0a0a;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
             margin: 0;
             padding: 0;
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--fux-orange), var(--fux-dark));
-            color: white;
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 4rem 0 3rem 0;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            height: 100%;
+            z-index: -1;
+            opacity: 0.18;
         }
 
-        .profile-container {
-            position: relative;
-            display: inline-block;
+        header {
+            text-align: center;
+            padding: 4rem 1rem 2rem 1rem;
+            z-index: 1;
         }
 
         .profile-img {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%; /* Macht das Bild rund */
-            border: 5px solid white;
-            object-fit: cover; /* Verhindert Verzerrung */
-            background-color: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            border: 4px solid var(--neon-orange);
+            box-shadow: 0 0 25px var(--neon-orange);
+            object-fit: cover;
+            background: #000;
+            transition: 0.5s;
         }
 
         .profile-img:hover {
-            transform: scale(1.05); /* Kleiner Zoom-Effekt beim Drüberfahren */
+            transform: rotate(5deg) scale(1.05);
+            box-shadow: 0 0 40px var(--neon-orange);
         }
 
         h1 {
-            margin: 1.5rem 0 0.5rem 0;
             font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            font-weight: 300;
+            text-transform: uppercase;
+            margin: 15px 0 5px 0;
+            text-shadow: 0 0 10px var(--neon-orange);
         }
 
         .container {
-            max-width: 700px;
             width: 90%;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .about-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
+            max-width: 450px;
+            z-index: 1;
+            padding-bottom: 50px;
         }
 
         .links {
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
+            margin-top: 2rem;
         }
 
         .btn {
-            background-color: white;
-            color: var(--fux-dark);
-            padding: 1.2rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid;
+            color: white;
+            padding: 1.1rem;
             text-decoration: none;
-            border-radius: 15px;
+            border-radius: 12px;
             font-weight: bold;
-            font-size: 1.1rem;
-            border: 2px solid var(--fux-dark);
-            transition: all 0.2s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            text-align: center;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+            letter-spacing: 1px;
         }
 
-        .btn:hover {
-            background-color: var(--fux-dark);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
-        }
+        /* Individuelle Neon-Farben für die Buttons */
+        .yt { border-color: #ff0000; }
+        .yt:hover { background: #ff0000; box-shadow: 0 0 20px #ff0000; }
+
+        .tt { border-color: #ffffff; }
+        .tt:hover { background: #ffffff; color: black; box-shadow: 0 0 20px #ffffff; }
+
+        .ig { border-color: var(--neon-purple); }
+        .ig:hover { background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
+
+        .mail { border-color: var(--neon-cyan); }
+        .mail:hover { background: var(--neon-cyan); color: black; box-shadow: 0 0 20px var(--neon-cyan); }
 
         footer {
-            margin: 4rem 0 2rem 0;
-            font-size: 0.85rem;
-            color: #95a5a6;
-        }
-
-        /* Responsive Design für Handys */
-        @media (max-width: 480px) {
-            h1 { font-size: 1.8rem; }
-            .profile-img { width: 140px; height: 140px; }
+            margin-top: 4rem;
+            font-size: 0.75rem;
+            color: #555;
+            text-align: center;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
+<canvas id="matrix-canvas"></canvas>
+
 <header>
-    <div class="profile-container">
-        <img src="fuchs.jpg" alt="Der lächelnde Fux - remosmiles" class="profile-img">
-    </div>
+    <img src="fuchs.jpg" alt="Der lächelnde Fux" class="profile-img">
     <h1>Der lächelnde Fux</h1>
-    <p class="subtitle">Willkommen in meinem Bau! 🦊</p>
+    <p style="color: var(--neon-cyan); font-weight: bold;">EPISCHER SIEG 🦊</p>
 </header>
 
 <div class="container">
-    <section class="about-section">
-        <h2>Über mich</h2>
-        <p>
-            Hey! Ich bin <strong>remosmiles</strong>. Auf meinem Kanal dreht sich alles um Spaß, 
-            Gaming und natürlich das Lächeln. Mit fast 1.000 Abonnenten sind wir eine wachsende Community. 
-            Schön, dass du hier bist!
-        </p>
-    </section>
-
     <div class="links">
-        <a href="https://www.youtube.com/@remosmiles" class="btn" target="_blank">
-            <span>📺</span> Mein YouTube Kanal
-        </a>
-        <a href="https://www.instagram.com/smiledfux" class="btn" target="_blank">
-            <span>📸</span> Instagram Profil
-        </a>
-        <a href="mailto:rem.otresch@hotmail.com" class="btn">
-            <span>✉️</span> Business & Kontakt
-        </a>
+        <a href="https://www.youtube.com/@remosmiles" class="btn yt" target="_blank">📺 YOUTUBE</a>
+        <a href="https://www.tiktok.com/@smiledfux" class="btn tt" target="_blank">🎵 TIKTOK</a>
+        <a href="https://www.instagram.com/smiledfux" class="btn ig" target="_blank">📸 INSTAGRAM</a>
+        <a href="mailto:rem.otresch@hotmail.com" class="btn mail">📧 EMAIL KONTAKT</a>
     </div>
 
     <footer>
-        <p>&copy; 2026 Der lächelnde Fux | remosmiles</p>
-        <p>Gehostet via Vercel & GitHub</p>
+        <p>REMOSMILES &copy; 2026</p>
     </footer>
 </div>
+
+<script>
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const chars = "010101🦊FOXSIEGREACH";
+    const drops = Array(Math.floor(canvas.width/16)).fill(1);
+
+    function draw() {
+        ctx.fillStyle = "rgba(10, 10, 10, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#00f2ff";
+        ctx.font = "15px monospace";
+        drops.forEach((y, i) => {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * 16, y * 16);
+            if (y * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        });
+    }
+    setInterval(draw, 35);
+</script>
 
 </body>
 </html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der lächelnde Fux | remosmiles</title>
+    <meta name="description" content="Willkommen auf der offiziellen Website von remosmiles - Der lächelnde Fux auf YouTube! Erlebe epische Siege und gute Laune.">
+    
+    <style>
+        :root {
+            --fux-orange: #ff8c00;
+            --fux-dark: #e67e22;
+            --bg-color: #f9f9fb;
+            --text-color: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--fux-orange), var(--fux-dark));
+            color: white;
+            width: 100%;
+            padding: 4rem 0 3rem 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .profile-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%; /* Macht das Bild rund */
+            border: 5px solid white;
+            object-fit: cover; /* Verhindert Verzerrung */
+            background-color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05); /* Kleiner Zoom-Effekt beim Drüberfahren */
+        }
+
+        h1 {
+            margin: 1.5rem 0 0.5rem 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 90%;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .about-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .btn {
+            background-color: white;
+            color: var(--fux-dark);
+            padding: 1.2rem;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: 2px solid var(--fux-dark);
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            background-color: var(--fux-dark);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        footer {
+            margin: 4rem 0 2rem 0;
+            font-size: 0.85rem;
+            color: #95a5a6;
+        }
+
+        /* Responsive Design für Handys */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            .profile-img { width: 140px; height: 140px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="profile-container">
+        <img src="fuchs.jpg" alt="Der lächelnde Fux - remosmiles" class="profile-img">
+    </div>
+    <h1>Der lächelnde Fux</h1>
+    <p class="subtitle">Willkommen in meinem Bau! 🦊</p>
+</header>
+
+<div class="container">
+    <section class="about-section">
+        <h2>Über mich</h2>
+        <p>
+            Hey! Ich bin <strong>remosmiles</strong>. Auf meinem Kanal dreht sich alles um Spaß, 
+            Gaming und natürlich das Lächeln. Mit fast 1.000 Abonnenten sind wir eine wachsende Community. 
+            Schön, dass du hier bist!
+        </p>
+    </section>
+
+    <div class="links">
+        <a href="https://www.youtube.com/@remosmiles" class="btn" target="_blank">
+            <span>📺</span> Mein YouTube Kanal
+        </a>
+        <a href="https://www.instagram.com/DEIN_NAME" class="btn" target="_blank">
+            <span>📸</span> Instagram Profil
+        </a>
+        <a href="mailto:DEINE_EMAIL@BEISPIEL.DE" class="btn">
+            <span>✉️</span> Business & Kontakt
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Der lächelnde Fux | remosmiles</p>
+        <p>Gehostet via Vercel & GitHub</p>
+    </footer>
+</div>
+
+</body>
+</html>

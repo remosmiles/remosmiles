@@ -9,6 +9,7 @@
             --neon-orange: #ff8c00;
             --neon-cyan: #00f2ff;
             --neon-purple: #bc13fe;
+            --neon-gold: #ffd700;
             --dark-bg: #0a0a0a;
         }
 
@@ -24,6 +25,7 @@
             align-items: center;
         }
 
+        /* Matrix Hintergrund */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -89,9 +91,10 @@
             transition: 0.3s;
             backdrop-filter: blur(10px);
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
-        /* Individuelle Neon-Farben für die Buttons */
+        /* Neon-Farben */
         .yt { border-color: #ff0000; }
         .yt:hover { background: #ff0000; box-shadow: 0 0 20px #ff0000; }
 
@@ -100,6 +103,9 @@
 
         .ig { border-color: var(--neon-purple); }
         .ig:hover { background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
+
+        .kofi { border-color: var(--neon-gold); color: var(--neon-gold); }
+        .kofi:hover { background: var(--neon-gold); color: black; box-shadow: 0 0 30px var(--neon-gold); }
 
         .mail { border-color: var(--neon-cyan); }
         .mail:hover { background: var(--neon-cyan); color: black; box-shadow: 0 0 20px var(--neon-cyan); }
@@ -125,14 +131,16 @@
 
 <div class="container">
     <div class="links">
-        <a href="https://www.youtube.com/@remosmiles" class="btn yt" target="_blank">📺 YOUTUBE</a>
-        <a href="https://www.tiktok.com/@smiledfux" class="btn tt" target="_blank">🎵 TIKTOK</a>
-        <a href="https://www.instagram.com/smiledfux" class="btn ig" target="_blank">📸 INSTAGRAM</a>
-        <a href="mailto:rem.otresch@hotmail.com" class="btn mail">📧 EMAIL KONTAKT</a>
+        <a href="https://www.youtube.com/@remosmiles" class="btn yt" target="_blank">📺 YouTube</a>
+        <a href="https://www.tiktok.com/@smiledfux" class="btn tt" target="_blank">🎵 TikTok</a>
+        <a href="https://www.instagram.com/smiledfux" class="btn ig" target="_blank">📸 Instagram</a>
+        <a href="https://ko-fi.com/remosmiles" class="btn kofi" target="_blank">🦊 Support den Fux (Ko-fi)</a>
+        <a href="mailto:rem.otresch@hotmail.com" class="btn mail">📧 Email Kontakt</a>
     </div>
 
     <footer>
         <p>REMOSMILES &copy; 2026</p>
+        <p>FAST 1.000 ABONNENTEN - DANKE!</p>
     </footer>
 </div>
 
@@ -157,6 +165,10 @@
             drops[i]++;
         });
     }
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
     setInterval(draw, 35);
 </script>
 

@@ -25,7 +25,6 @@
             align-items: center;
         }
 
-        /* Matrix Hintergrund */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -94,7 +93,6 @@
             text-transform: uppercase;
         }
 
-        /* Neon-Farben */
         .yt { border-color: #ff0000; }
         .yt:hover { background: #ff0000; box-shadow: 0 0 20px #ff0000; }
 
@@ -117,6 +115,34 @@
             text-align: center;
             letter-spacing: 2px;
         }
+
+        #impressum-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #111;
+            border: 2px solid var(--neon-cyan);
+            padding: 2rem;
+            z-index: 100;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            text-align: left;
+        }
+
+        .close-btn {
+            background: var(--neon-cyan);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -134,14 +160,28 @@
         <a href="https://www.youtube.com/@remosmiles" class="btn yt" target="_blank">📺 YouTube</a>
         <a href="https://www.tiktok.com/@smiledfux" class="btn tt" target="_blank">🎵 TikTok</a>
         <a href="https://www.instagram.com/smiledfux" class="btn ig" target="_blank">📸 Instagram</a>
-        <a href="https://ko-fi.com/remosmiles" class="btn kofi" target="_blank">🦊 Support den Fux (Ko-fi)</a>
-        <a href="mailto:rem.otresch@hotmail.com" class="btn mail">📧 Email Kontakt</a>
+        <a href="https://ko-fi.com/remosmiles" class="btn kofi" target="_blank">🦊 Support den Fux</a>
+        <a href="mailto:rem.otresch@hotmail.com" class="btn mail">📧 Kontakt</a>
     </div>
 
     <footer>
-        <p>REMOSMILES &copy; 2026</p>
+        <p>REMOSMILES &copy; 2026 | <a href="javascript:void(0)" onclick="toggleImpressum()" style="color: #666; text-decoration: none;">Impressum</a></p>
         <p>FAST 1.000 ABONNENTEN - DANKE!</p>
     </footer>
+</div>
+
+<div id="impressum-modal">
+    <h2 style="color:var(--neon-cyan); margin-top:0;">Impressum</h2>
+    <p><strong>Betreiber der Website:</strong><br>
+    Remo Tresch<br>
+    Attinghauserstrasse 32<br>
+    6460 Altdorf<br>
+    Schweiz</p>
+    
+    <p><strong>Kontakt:</strong><br>
+    E-Mail: rem.otresch@hotmail.com</p>
+    
+    <button class="close-btn" onclick="toggleImpressum()">Schliessen</button>
 </div>
 
 <script>
@@ -165,6 +205,12 @@
             drops[i]++;
         });
     }
+
+    function toggleImpressum() {
+        const modal = document.getElementById('impressum-modal');
+        modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
+    }
+
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;

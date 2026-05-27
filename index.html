@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Der lächelnde Fux - Social Links und Kontakt">
     <title>Der lächelnde Fux | remosmiles</title>
     <style>
         :root {
@@ -18,7 +19,7 @@
             padding: 0;
             background-color: var(--dark-bg);
             color: white;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
@@ -33,6 +34,7 @@
             height: 100%;
             z-index: -1;
             opacity: 0.18;
+            pointer-events: none; /* Verhindert, dass das Canvas Klicks abfängt */
         }
 
         header {
@@ -49,7 +51,7 @@
             box-shadow: 0 0 25px var(--neon-orange);
             object-fit: cover;
             background: #000;
-            transition: 0.5s;
+            transition: transform 0.5s, box-shadow 0.5s;
         }
 
         .profile-img:hover {
@@ -64,7 +66,7 @@
             text-shadow: 0 0 10px var(--neon-orange);
         }
 
-        .container {
+        main {
             width: 90%;
             max-width: 450px;
             z-index: 1;
@@ -87,26 +89,33 @@
             border-radius: 12px;
             font-weight: bold;
             text-align: center;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
+        /* Tastatur-Fokus für Accessibility */
+        .btn:focus-visible {
+            outline: 3px solid var(--neon-cyan);
+            outline-offset: 4px;
+        }
+
         .yt { border-color: #ff0000; }
-        .yt:hover { background: #ff0000; box-shadow: 0 0 20px #ff0000; }
+        .yt:hover, .yt:focus-visible { background: #ff0000; box-shadow: 0 0 20px #ff0000; }
 
         .tt { border-color: #ffffff; }
-        .tt:hover { background: #ffffff; color: black; box-shadow: 0 0 20px #ffffff; }
+        .tt:hover, .tt:focus-visible { background: #ffffff; color: black; box-shadow: 0 0 20px #ffffff; }
 
         .ig { border-color: var(--neon-purple); }
-        .ig:hover { background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
+        .ig:hover, .ig:focus-visible { background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
 
         .kofi { border-color: var(--neon-gold); color: var(--neon-gold); }
-        .kofi:hover { background: var(--neon-gold); color: black; box-shadow: 0 0 30px var(--neon-gold); }
+        .kofi:hover, .kofi:focus-visible { background: var(--neon-gold); color: black; box-shadow: 0 0 30px var(--neon-gold); }
 
         .mail { border-color: var(--neon-cyan); }
-        .mail:hover { background: var(--neon-cyan); color: black; box-shadow: 0 0 20px var(--neon-cyan); }
+        .mail:hover, .mail:focus-visible { background: var(--neon-cyan); color: black; box-shadow: 0 0 20px var(--neon-cyan); }
 
         footer {
             margin-top: 4rem;
@@ -116,25 +125,28 @@
             letter-spacing: 2px;
         }
 
-        #impressum-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        /* Modernes natives Dialog-Element */
+        dialog {
             background: #111;
+            color: white;
             border: 2px solid var(--neon-cyan);
             padding: 2rem;
-            z-index: 100;
             border-radius: 15px;
-            width: 80%;
+            width: 90%;
             max-width: 400px;
             box-shadow: 0 0 50px rgba(0,0,0,0.9);
             text-align: left;
+            margin: auto; /* Zentriert automatisch im modernen Browser */
+        }
+
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(3px);
         }
 
         .close-btn {
             background: var(--neon-cyan);
+            color: black;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -142,6 +154,11 @@
             font-weight: bold;
             margin-top: 15px;
             width: 100%;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            box-shadow: 0 0 15px var(--neon-cyan);
         }
     </style>
 </head>
@@ -150,27 +167,27 @@
 <canvas id="matrix-canvas"></canvas>
 
 <header>
-    <img src="fuchs.jpg" alt="Der lächelnde Fux" class="profile-img">
+    <img src="fuchs.jpg" alt="Profilbild von Der lächelnde Fux" class="profile-img">
     <h1>Der lächelnde Fux</h1>
     <p style="color: var(--neon-cyan); font-weight: bold;">Sportliche Reise 🦊</p>
 </header>
 
-<div class="container">
-    <div class="links">
-        <a href="https://www.youtube.com/@remosmiles" class="btn yt" target="_blank">📺 YouTube</a>
-        <a href="https://www.tiktok.com/@smiledfux" class="btn tt" target="_blank">🎵 TikTok</a>
-        <a href="https://www.instagram.com/smiledfux" class="btn ig" target="_blank">📸 Instagram</a>
-        <a href="https://ko-fi.com/remosmiles" class="btn kofi" target="_blank">🦊 Support den Fux</a>
+<main>
+    <nav class="links" aria-label="Social Media Links">
+        <a href="https://www.youtube.com/@remosmiles" class="btn yt" target="_blank" rel="noopener noreferrer">📺 YouTube</a>
+        <a href="https://www.tiktok.com/@smiledfux" class="btn tt" target="_blank" rel="noopener noreferrer">🎵 TikTok</a>
+        <a href="https://www.instagram.com/smiledfux" class="btn ig" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
+        <a href="https://ko-fi.com/remosmiles" class="btn kofi" target="_blank" rel="noopener noreferrer">🦊 Support den Fux</a>
         <a href="mailto:rem.otresch@hotmail.com" class="btn mail">📧 Kontakt</a>
-    </div>
+    </nav>
 
     <footer>
-        <p>REMOSMILES &copy; 2026 | <a href="javascript:void(0)" onclick="toggleImpressum()" style="color: #666; text-decoration: none;">Impressum</a></p>
-        <p>FAST 1.000 ABONNENTEN - DANKE!</p>
+        <p>REMOSMILES &copy; 2026 | <a href="javascript:void(0)" onclick="document.getElementById('impressum-modal').showModal()" style="color: #888; text-decoration: underline;">Impressum</a></p>
+        <p>ÜBER 1.000 ABONNENTEN - DANKE! 🎉</p>
     </footer>
-</div>
+</main>
 
-<div id="impressum-modal">
+<dialog id="impressum-modal">
     <h2 style="color:var(--neon-cyan); margin-top:0;">Impressum</h2>
     <p><strong>Betreiber der Website:</strong><br>
     Remo Tresch<br>
@@ -181,41 +198,54 @@
     <p><strong>Kontakt:</strong><br>
     E-Mail: rem.otresch@hotmail.com</p>
     
-    <button class="close-btn" onclick="toggleImpressum()">Schliessen</button>
-</div>
+    <button class="close-btn" onclick="document.getElementById('impressum-modal').close()">Schliessen</button>
+</dialog>
 
 <script>
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
+    
+    let width, height;
     const chars = "010101🦊FOXSIEGREACH";
-    const drops = Array(Math.floor(canvas.width/16)).fill(1);
+    let drops = [];
 
-    function draw() {
-        ctx.fillStyle = "rgba(10, 10, 10, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Resize-Logik sauber ausgelagert
+    function initMatrix() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        const columns = Math.floor(width / 16);
+        drops = Array(columns).fill(1);
+    }
+
+    // Modernere und performantere Animationsschleife (requestAnimationFrame)
+    let lastTime = 0;
+    const fps = 25; // Steuert die Geschwindigkeit des Matrix-Regens
+    
+    function draw(time) {
+        requestAnimationFrame(draw);
+        
+        // Begrenzt die Bildrate auf den fps-Wert
+        if (time - lastTime < 1000 / fps) return;
+        lastTime = time;
+
+        ctx.fillStyle = "rgba(10, 10, 10, 0.1)"; // Etwas stärkeres Fading
+        ctx.fillRect(0, 0, width, height);
         ctx.fillStyle = "#00f2ff";
         ctx.font = "15px monospace";
+        
         drops.forEach((y, i) => {
             const text = chars[Math.floor(Math.random() * chars.length)];
             ctx.fillText(text, i * 16, y * 16);
-            if (y * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            if (y * 16 > height && Math.random() > 0.975) drops[i] = 0;
             drops[i]++;
         });
     }
 
-    function toggleImpressum() {
-        const modal = document.getElementById('impressum-modal');
-        modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
-    }
+    // Initialisierung und Event Listener
+    initMatrix();
+    requestAnimationFrame(draw);
 
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-    setInterval(draw, 35);
+    window.addEventListener('resize', initMatrix);
 </script>
 
 </body>

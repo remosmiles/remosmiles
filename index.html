@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Der lächelnde Fux - Social Links und Kontakt">
+    <meta name="description" content="Der lächelnde Fux - Social Links, Kontakt und sportliche Reise">
     <title>Der lächelnde Fux | remosmiles</title>
     <style>
         :root {
@@ -12,6 +12,8 @@
             --neon-purple: #bc13fe;
             --neon-gold: #ffd700;
             --dark-bg: #0a0a0a;
+            --glass-bg: rgba(20, 20, 20, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         body {
@@ -34,28 +36,31 @@
             height: 100%;
             z-index: -1;
             opacity: 0.18;
-            pointer-events: none; /* Verhindert, dass das Canvas Klicks abfängt */
+            pointer-events: none;
         }
 
         header {
             text-align: center;
-            padding: 4rem 1rem 2rem 1rem;
+            padding: 3rem 1rem 1rem 1rem;
             z-index: 1;
         }
 
         .profile-img {
-            width: 170px;
-            height: 170px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             border: 4px solid var(--neon-orange);
             box-shadow: 0 0 25px var(--neon-orange);
             object-fit: cover;
             background: #000;
-            transition: transform 0.5s, box-shadow 0.5s;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
         }
 
         .profile-img:hover {
-            transform: rotate(5deg) scale(1.05);
+            transform: scale(1.1) rotate(5deg);
             box-shadow: 0 0 40px var(--neon-orange);
         }
 
@@ -66,22 +71,98 @@
             text-shadow: 0 0 10px var(--neon-orange);
         }
 
+        /* Countdown Styling */
+        .countdown-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0 25px 0;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: inline-block;
+        }
+        
+        .countdown-title {
+            font-size: 0.8rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        #countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: monospace;
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+
         main {
             width: 90%;
             max-width: 450px;
             z-index: 1;
             padding-bottom: 50px;
+            perspective: 1000px; /* Für den 3D-Effekt */
+        }
+
+        /* YouTube Widget Styling */
+        .yt-widget {
+            background: var(--glass-bg);
+            border: 1px solid #ff0000;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            display: block;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+        }
+
+        .yt-widget:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
+        }
+
+        .yt-badge {
+            background: #ff0000;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .yt-thumbnail {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .yt-title {
+            font-size: 1rem;
+            font-weight: bold;
+            line-height: 1.3;
         }
 
         .links {
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
-            margin-top: 2rem;
         }
 
         .btn {
-            background: rgba(0, 0, 0, 0.6);
+            background: var(--glass-bg);
             border: 2px solid;
             color: white;
             padding: 1.1rem;
@@ -89,43 +170,56 @@
             border-radius: 12px;
             font-weight: bold;
             text-align: center;
-            transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             letter-spacing: 1px;
             text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d; /* Für 3D Tilt */
+            transition: transform 0.1s, box-shadow 0.3s; /* Tilt Update ist schneller */
         }
 
-        /* Tastatur-Fokus für Accessibility */
         .btn:focus-visible {
             outline: 3px solid var(--neon-cyan);
             outline-offset: 4px;
         }
 
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
         .yt { border-color: #ff0000; }
-        .yt:hover, .yt:focus-visible { background: #ff0000; box-shadow: 0 0 20px #ff0000; }
-
         .tt { border-color: #ffffff; }
-        .tt:hover, .tt:focus-visible { background: #ffffff; color: black; box-shadow: 0 0 20px #ffffff; }
-
         .ig { border-color: var(--neon-purple); }
-        .ig:hover, .ig:focus-visible { background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
-
         .kofi { border-color: var(--neon-gold); color: var(--neon-gold); }
-        .kofi:hover, .kofi:focus-visible { background: var(--neon-gold); color: black; box-shadow: 0 0 30px var(--neon-gold); }
-
         .mail { border-color: var(--neon-cyan); }
-        .mail:hover, .mail:focus-visible { background: var(--neon-cyan); color: black; box-shadow: 0 0 20px var(--neon-cyan); }
+        .share { border-color: #00ff88; color: #00ff88; cursor: pointer;}
+
+        .btn:hover.yt { box-shadow: 0 0 20px #ff0000; background: rgba(255,0,0,0.2); }
+        .btn:hover.tt { box-shadow: 0 0 20px #ffffff; background: rgba(255,255,255,0.2); }
+        .btn:hover.ig { box-shadow: 0 0 20px var(--neon-purple); background: rgba(188,19,254,0.2); }
+        .btn:hover.kofi { box-shadow: 0 0 20px var(--neon-gold); background: rgba(255,215,0,0.2); }
+        .btn:hover.mail { box-shadow: 0 0 20px var(--neon-cyan); background: rgba(0,242,255,0.2); }
+        .btn:hover.share { box-shadow: 0 0 20px #00ff88; background: rgba(0,255,136,0.2); }
 
         footer {
-            margin-top: 4rem;
+            margin-top: 3rem;
             font-size: 0.75rem;
             color: #555;
             text-align: center;
             letter-spacing: 2px;
         }
 
-        /* Modernes natives Dialog-Element */
         dialog {
             background: #111;
             color: white;
@@ -136,7 +230,7 @@
             max-width: 400px;
             box-shadow: 0 0 50px rgba(0,0,0,0.9);
             text-align: left;
-            margin: auto; /* Zentriert automatisch im modernen Browser */
+            margin: auto;
         }
 
         dialog::backdrop {
@@ -156,10 +250,7 @@
             width: 100%;
             transition: 0.3s;
         }
-
-        .close-btn:hover {
-            box-shadow: 0 0 15px var(--neon-cyan);
-        }
+        .close-btn:hover { box-shadow: 0 0 15px var(--neon-cyan); }
     </style>
 </head>
 <body>
@@ -167,18 +258,31 @@
 <canvas id="matrix-canvas"></canvas>
 
 <header>
-    <img src="fuchs.jpg" alt="Profilbild von Der lächelnde Fux" class="profile-img">
+    <img src="fuchs.jpg" alt="Profilbild von Der lächelnde Fux" class="profile-img" id="fux-bild">
     <h1>Der lächelnde Fux</h1>
-    <p style="color: var(--neon-cyan); font-weight: bold;">Sportliche Reise 🦊</p>
+    <p style="color: var(--neon-cyan); font-weight: bold; margin-bottom: 0;">Sportliche Reise 🦊</p>
+    
+    <div class="countdown-container">
+        <div class="countdown-title">Lucerne Half Marathon</div>
+        <div id="countdown">Lade...</div>
+    </div>
 </header>
 
 <main>
+    <a href="https://www.youtube.com/@remosmiles" class="yt-widget tilt-element" target="_blank" rel="noopener noreferrer">
+        <div class="yt-badge">Neuestes Video</div>
+        <img src="https://images.unsplash.com/photo-1552674605-db6aea11e54c?auto=format&fit=crop&q=80&w=800&h=450" alt="Video Thumbnail" class="yt-thumbnail">
+        <div class="yt-title">Meine Vorbereitung auf den Halbmarathon! 🏃‍♂️💨</div>
+    </a>
+
     <nav class="links" aria-label="Social Media Links">
-        <a href="https://www.youtube.com/@remosmiles" class="btn yt" target="_blank" rel="noopener noreferrer">📺 YouTube</a>
-        <a href="https://www.tiktok.com/@smiledfux" class="btn tt" target="_blank" rel="noopener noreferrer">🎵 TikTok</a>
-        <a href="https://www.instagram.com/smiledfux" class="btn ig" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
-        <a href="https://ko-fi.com/remosmiles" class="btn kofi" target="_blank" rel="noopener noreferrer">🦊 Support den Fux</a>
-        <a href="mailto:rem.otresch@hotmail.com" class="btn mail">📧 Kontakt</a>
+        <a href="https://www.youtube.com/@remosmiles" class="btn yt tilt-element" target="_blank" rel="noopener noreferrer">📺 YouTube</a>
+        <a href="https://www.tiktok.com/@smiledfux" class="btn tt tilt-element" target="_blank" rel="noopener noreferrer">🎵 TikTok</a>
+        <a href="https://www.instagram.com/smiledfux" class="btn ig tilt-element" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
+        <a href="https://ko-fi.com/remosmiles" class="btn kofi tilt-element" target="_blank" rel="noopener noreferrer">🦊 Support den Fux</a>
+        <a href="mailto:rem.otresch@hotmail.com" class="btn mail tilt-element">📧 Kontakt</a>
+        
+        <button id="share-btn" class="btn share tilt-element" style="display: none;">🔗 Seite Teilen</button>
     </nav>
 
     <footer>
@@ -202,14 +306,13 @@
 </dialog>
 
 <script>
+    // --- 1. Matrix Hintergrund & Easter Egg ---
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
-    
     let width, height;
-    const chars = "010101🦊FOXSIEGREACH";
+    let chars = "010101🦊FOXSIEGREACH";
     let drops = [];
 
-    // Resize-Logik sauber ausgelagert
     function initMatrix() {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
@@ -217,18 +320,15 @@
         drops = Array(columns).fill(1);
     }
 
-    // Modernere und performantere Animationsschleife (requestAnimationFrame)
     let lastTime = 0;
-    const fps = 25; // Steuert die Geschwindigkeit des Matrix-Regens
+    const fps = 25; 
     
     function draw(time) {
         requestAnimationFrame(draw);
-        
-        // Begrenzt die Bildrate auf den fps-Wert
         if (time - lastTime < 1000 / fps) return;
         lastTime = time;
 
-        ctx.fillStyle = "rgba(10, 10, 10, 0.1)"; // Etwas stärkeres Fading
+        ctx.fillStyle = "rgba(10, 10, 10, 0.1)"; 
         ctx.fillRect(0, 0, width, height);
         ctx.fillStyle = "#00f2ff";
         ctx.font = "15px monospace";
@@ -241,11 +341,83 @@
         });
     }
 
-    // Initialisierung und Event Listener
     initMatrix();
     requestAnimationFrame(draw);
-
     window.addEventListener('resize', initMatrix);
+
+    // Easter Egg Logik
+    const fuxBild = document.getElementById('fux-bild');
+    let clickCount = 0;
+    fuxBild.addEventListener('click', () => {
+        clickCount++;
+        if(clickCount === 3) {
+            chars = "🦊🏃‍♂️🔥💯"; // Ändert den Matrix-Code
+            document.body.style.setProperty('--neon-cyan', '#ff8c00'); // Macht die Seite Orange
+            alert("Fux-Modus aktiviert! 🦊🔥");
+            setTimeout(() => { clickCount = 0; chars = "010101🦊FOXSIEGREACH"; document.body.style.setProperty('--neon-cyan', '#00f2ff'); }, 10000);
+        }
+    });
+
+    // --- 2. Countdown Timer (25. Oktober 2026, 09:00 Uhr) ---
+    const targetDate = new Date("Oct 25, 2026 09:00:00").getTime();
+    
+    const updateCountdown = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+        
+        if (distance < 0) {
+            clearInterval(updateCountdown);
+            document.getElementById("countdown").innerHTML = "ES GEHT LOS! 🏃‍♂️💨";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        
+        document.getElementById("countdown").innerHTML = `${days}T ${hours}S ${minutes}M`;
+    }, 1000);
+
+    // --- 3. 3D Tilt Effekt für Buttons (Glassmorphism + Vanilla JS) ---
+    const tiltElements = document.querySelectorAll('.tilt-element');
+    
+    // Prüfen, ob wir auf einem Touch-Gerät sind (da brauchen wir keinen Tilt)
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        tiltElements.forEach(el => {
+            el.addEventListener('mousemove', e => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Berechne die Rotation (max 10 Grad)
+                const xPct = (x / rect.width) - 0.5;
+                const yPct = (y / rect.height) - 0.5;
+                
+                el.style.transform = `perspective(1000px) rotateX(${yPct * -20}deg) rotateY(${xPct * 20}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+    }
+
+    // --- 4. Native Share API ---
+    const shareBtn = document.getElementById('share-btn');
+    if (navigator.share) {
+        shareBtn.style.display = 'block'; // Nur anzeigen, wenn der Browser es unterstützt
+        shareBtn.addEventListener('click', async () => {
+            try {
+                await navigator.share({
+                    title: 'Der lächelnde Fux',
+                    text: 'Schau dir die sportliche Reise vom lächelnden Fux an!',
+                    url: window.location.href
+                });
+            } catch (err) {
+                console.log('Teilen abgebrochen oder fehlgeschlagen:', err);
+            }
+        });
+    }
 </script>
 
 </body>

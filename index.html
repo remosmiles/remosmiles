@@ -5,327 +5,510 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Der lächelnde Fux - Social Links, Kontakt und sportliche Reise">
     <title>Der lächelnde Fux | remosmiles</title>
+    <!-- Preload Font for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-orange: #ff8c00;
-            --neon-cyan: #00f2ff;
-            --neon-purple: #bc13fe;
-            --neon-gold: #ffd700;
-            --dark-bg: #0a0a0a;
-            --glass-bg: rgba(20, 20, 20, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            /* Dynamic Theme Variable */
+            --primary-neon: #00f2ff; 
+            
+            /* Core Colors */
+            --yt-color: #ff0000;
+            --tt-color: #ffffff;
+            --ig-color: #bc13fe;
+            --kofi-color: #ffd700;
+            --dark-bg: #050505;
+            
+            /* Glassmorphism */
+            --glass-bg: rgba(15, 15, 15, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
             background-color: var(--dark-bg);
-            color: white;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #e0e0e0;
+            font-family: 'Inter', system-ui, sans-serif;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
+        /* Matrix Background & Vignette */
         #matrix-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.18;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2;
+            opacity: 0.15;
             pointer-events: none;
+        }
+
+        .bg-vignette {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, var(--dark-bg) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            position: absolute;
+            top: 20px; right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            animation: fadeInDown 1s ease forwards;
+        }
+
+        .theme-btn {
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .theme-btn:hover { transform: scale(1.3); }
+        .theme-cyan { background: #00f2ff; }
+        .theme-orange { background: #ff8c00; }
+        .theme-purple { background: #bc13fe; }
+
+        /* Initial Setup for Animations */
+        .animate-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         header {
             text-align: center;
-            padding: 3rem 1rem 1rem 1rem;
+            padding: 4rem 1rem 1rem 1rem;
             z-index: 1;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
         }
 
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: clamp(120px, 15vw, 150px);
+            height: clamp(120px, 15vw, 150px);
             border-radius: 50%;
-            border: 4px solid var(--neon-orange);
-            box-shadow: 0 0 25px var(--neon-orange);
+            border: 3px solid var(--primary-neon);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 30px var(--primary-neon);
             object-fit: cover;
             background: #000;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
             cursor: pointer;
             position: relative;
             z-index: 10;
         }
 
         .profile-img:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 40px var(--neon-orange);
+            transform: scale(1.08) rotate(5deg);
+            box-shadow: 0 0 40px var(--primary-neon);
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 800;
             text-transform: uppercase;
-            margin: 15px 0 5px 0;
-            text-shadow: 0 0 10px var(--neon-orange);
+            margin: 20px 0 5px 0;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: -0.5px;
         }
 
-        /* Countdown Styling */
+        .subtitle {
+            color: var(--primary-neon);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s ease;
+        }
+
+        /* Countdown Container Premium Style */
         .countdowns-wrapper {
             display: flex;
             justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
-            margin: 15px 0 25px 0;
+            margin: 25px 0 35px 0;
             width: 100%;
         }
 
         .countdown-container {
             background: var(--glass-bg);
-            border: 1px solid var(--neon-cyan);
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255,255,255,0.15); /* Light catch */
+            border-radius: 16px;
+            padding: 15px 20px;
+            box-shadow: var(--glass-shadow);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             flex: 1;
-            min-width: 140px;
+            min-width: 160px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+        
+        .countdown-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--primary-neon);
+            opacity: 0.8;
+            transition: background 0.3s ease;
         }
         
         .countdown-title {
             font-size: 0.75rem;
-            color: var(--neon-cyan);
+            color: #a0a0a0;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            min-height: 28px; /* Sorgt dafür, dass zweizeilige Titel das Layout nicht brechen */
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Pulsing Dot */
+        .pulse-dot {
+            width: 6px; height: 6px;
+            background-color: var(--primary-neon);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            transition: background-color 0.3s ease;
         }
 
         .countdown-time {
-            font-size: 1.3rem;
-            font-weight: bold;
-            font-family: monospace;
-            text-shadow: 0 0 5px var(--neon-cyan);
+            font-size: clamp(1.2rem, 3vw, 1.4rem);
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
         }
 
         main {
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
             z-index: 1;
-            padding-bottom: 50px;
+            padding-bottom: 60px;
             perspective: 1000px;
         }
 
-        /* YouTube Widget Styling */
+        /* High-End Widget Styling */
         .yt-widget {
             background: var(--glass-bg);
-            border: 1px solid #ff0000;
-            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             padding: 15px;
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             text-align: center;
             text-decoration: none;
             color: white;
             display: block;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
-            transform-style: preserve-3d;
-            transition: transform 0.1s;
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
         }
 
-        .yt-widget:hover {
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
+        .yt-widget::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            box-shadow: inset 0 0 0 1px var(--yt-color);
+            opacity: 0.3;
+            transition: opacity 0.3s;
         }
+
+        .yt-widget:hover::after { opacity: 1; }
+        .yt-widget:hover .yt-thumbnail { transform: scale(1.03); }
 
         .yt-badge {
-            background: #ff0000;
+            position: absolute;
+            top: 25px; right: 25px;
+            background: var(--yt-color);
             color: white;
             font-size: 0.7rem;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 5px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            display: inline-block;
-            margin-bottom: 10px;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .thumbnail-wrapper {
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            position: relative;
         }
 
         .yt-thumbnail {
             width: 100%;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid var(--glass-border);
+            display: block;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .yt-title {
-            font-size: 1rem;
-            font-weight: bold;
-            line-height: 1.3;
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.4;
+            padding: 0 10px;
         }
 
+        /* Buttons Premium Layout */
         .links {
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 1rem;
         }
 
         .btn {
             background: var(--glass-bg);
-            border: 2px solid;
+            border: 1px solid var(--glass-border);
             color: white;
-            padding: 1.1rem;
+            padding: 1.2rem;
             text-decoration: none;
-            border-radius: 12px;
-            font-weight: bold;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             letter-spacing: 1px;
             text-transform: uppercase;
             position: relative;
-            overflow: hidden;
             transform-style: preserve-3d;
-            transition: transform 0.1s, box-shadow 0.3s;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.1s, box-shadow 0.3s, background 0.3s;
         }
 
-        .btn:focus-visible {
-            outline: 3px solid var(--neon-cyan);
-            outline-offset: 4px;
-        }
-
-        .btn::before {
-            content: '';
+        /* Dynamic Glare Effect */
+        .glare {
             position: absolute;
-            top: 0; left: -100%;
+            top: 0; left: 0;
             width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 60%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            border-radius: 16px;
         }
+        .btn:hover .glare { opacity: 1; }
 
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .yt { border-color: #ff0000; }
-        .tt { border-color: #ffffff; }
-        .ig { border-color: var(--neon-purple); }
-        .kofi { border-color: var(--neon-gold); color: var(--neon-gold); }
-        .mail { border-color: var(--neon-cyan); }
-        .share { border-color: #00ff88; color: #00ff88; cursor: pointer;}
-
-        .btn:hover.yt { box-shadow: 0 0 20px #ff0000; background: rgba(255,0,0,0.2); }
-        .btn:hover.tt { box-shadow: 0 0 20px #ffffff; background: rgba(255,255,255,0.2); }
-        .btn:hover.ig { box-shadow: 0 0 20px var(--neon-purple); background: rgba(188,19,254,0.2); }
-        .btn:hover.kofi { box-shadow: 0 0 20px var(--neon-gold); background: rgba(255,215,0,0.2); }
-        .btn:hover.mail { box-shadow: 0 0 20px var(--neon-cyan); background: rgba(0,242,255,0.2); }
-        .btn:hover.share { box-shadow: 0 0 20px #00ff88; background: rgba(0,255,136,0.2); }
+        /* Specific Brand Colors on Hover */
+        .btn:hover { background: rgba(30, 30, 30, 0.8); }
+        .yt:hover { border-color: var(--yt-color); box-shadow: 0 0 20px rgba(255,0,0,0.2); }
+        .tt:hover { border-color: var(--tt-color); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .ig:hover { border-color: var(--ig-color); box-shadow: 0 0 20px rgba(188,19,254,0.2); }
+        .kofi { color: var(--kofi-color); }
+        .kofi:hover { border-color: var(--kofi-color); box-shadow: 0 0 20px rgba(255,215,0,0.2); }
+        .mail:hover { border-color: var(--primary-neon); box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); transition: border-color 0.3s ease; }
+        .share { color: #00ff88; cursor: pointer; display: none; }
+        .share:hover { border-color: #00ff88; box-shadow: 0 0 20px rgba(0,255,136,0.2); }
 
         footer {
-            margin-top: 3rem;
-            font-size: 0.75rem;
-            color: #555;
+            margin-top: 4rem;
+            font-size: 0.8rem;
+            color: #777;
             text-align: center;
             letter-spacing: 2px;
+            font-weight: 600;
         }
+        
+        footer a { color: #999; text-decoration: none; transition: color 0.3s; }
+        footer a:hover { color: #fff; }
 
+        /* Premium Modal */
         dialog {
-            background: #111;
+            background: rgba(15, 15, 15, 0.95);
             color: white;
-            border: 2px solid var(--neon-cyan);
-            padding: 2rem;
-            border-radius: 15px;
+            border: 1px solid var(--primary-neon);
+            padding: 2.5rem;
+            border-radius: 20px;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.1);
             text-align: left;
             margin: auto;
+            backdrop-filter: blur(20px);
         }
 
         dialog::backdrop {
             background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(3px);
+            backdrop-filter: blur(5px);
         }
 
         .close-btn {
-            background: var(--neon-cyan);
+            background: var(--primary-neon);
             color: black;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            margin-top: 15px;
+            font-weight: 800;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 25px;
             width: 100%;
-            transition: 0.3s;
+            transition: all 0.3s;
         }
-        .close-btn:hover { box-shadow: 0 0 15px var(--neon-cyan); }
+        .close-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3); }
+
+        /* Keyframes */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(0, 242, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0); }
+        }
     </style>
 </head>
 <body>
 
 <canvas id="matrix-canvas"></canvas>
+<div class="bg-vignette"></div>
+
+<!-- Theme Switcher Premium Feature -->
+<div class="theme-switcher">
+    <div class="theme-btn theme-cyan" onclick="setTheme('#00f2ff')" title="Cyber Cyan"></div>
+    <div class="theme-btn theme-orange" onclick="setTheme('#ff8c00')" title="Fux Orange"></div>
+    <div class="theme-btn theme-purple" onclick="setTheme('#bc13fe')" title="Twitch Purple"></div>
+</div>
 
 <header>
-    <img src="fuchs.jpg" alt="Profilbild von Der lächelnde Fux" class="profile-img" id="fux-bild">
-    <h1>Der lächelnde Fux</h1>
-    <p style="color: var(--neon-cyan); font-weight: bold; margin-bottom: 0;">Sportliche Reise 🦊</p>
+    <img src="fuchs.jpg" alt="Der lächelnde Fux" class="profile-img animate-up" id="fux-bild" style="animation-delay: 0.1s;">
+    <h1 class="animate-up" style="animation-delay: 0.2s;">Der lächelnde Fux</h1>
+    <p class="subtitle animate-up" style="animation-delay: 0.3s;">Sportliche Reise 🦊</p>
     
-    <div class="countdowns-wrapper">
-        <div class="countdown-container">
-            <div class="countdown-title">Grappling Turnier</div>
+    <div class="countdowns-wrapper animate-up" style="animation-delay: 0.4s;">
+        <div class="countdown-container tilt-element">
+            <div class="glare"></div>
+            <div class="countdown-title">
+                <span class="pulse-dot"></span> Grappling Turnier
+            </div>
             <div id="countdown-grappling" class="countdown-time">Lade...</div>
         </div>
-        <div class="countdown-container">
-            <div class="countdown-title">Lucerne Half Marathon</div>
+        <div class="countdown-container tilt-element">
+            <div class="glare"></div>
+            <div class="countdown-title">
+                <span class="pulse-dot"></span> Lucerne Half Marathon
+            </div>
             <div id="countdown-marathon" class="countdown-time">Lade...</div>
         </div>
     </div>
 </header>
 
 <main>
-    <a href="https://www.youtube.com/@remosmiles" class="yt-widget tilt-element" target="_blank" rel="noopener noreferrer">
-        <div class="yt-badge">Neuestes Video</div>
-        <img src="https://images.unsplash.com/photo-1552674605-db6aea11e54c?auto=format&fit=crop&q=80&w=800&h=450" alt="Video Thumbnail" class="yt-thumbnail">
+    <a href="https://www.youtube.com/@remosmiles" class="yt-widget tilt-element animate-up" style="animation-delay: 0.5s;" target="_blank" rel="noopener noreferrer">
+        <div class="glare"></div>
+        <div class="yt-badge">Neues Video</div>
+        <div class="thumbnail-wrapper">
+            <img src="https://images.unsplash.com/photo-1552674605-db6aea11e54c?auto=format&fit=crop&q=80&w=800&h=450" alt="Vorbereitung Halbmarathon" class="yt-thumbnail">
+        </div>
         <div class="yt-title">Meine Vorbereitung auf den Halbmarathon! 🏃‍♂️💨</div>
     </a>
 
     <nav class="links" aria-label="Social Media Links">
-        <a href="https://www.youtube.com/@remosmiles" class="btn yt tilt-element" target="_blank" rel="noopener noreferrer">📺 YouTube</a>
-        <a href="https://www.tiktok.com/@smiledfux" class="btn tt tilt-element" target="_blank" rel="noopener noreferrer">🎵 TikTok</a>
-        <a href="https://www.instagram.com/smiledfux" class="btn ig tilt-element" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
-        <a href="https://ko-fi.com/remosmiles" class="btn kofi tilt-element" target="_blank" rel="noopener noreferrer">🦊 Support den Fux</a>
-        <a href="mailto:rem.otresch@hotmail.com" class="btn mail tilt-element">📧 Kontakt</a>
+        <a href="https://www.youtube.com/@remosmiles" class="btn yt tilt-element animate-up" style="animation-delay: 0.6s;" target="_blank" rel="noopener noreferrer">
+            <div class="glare"></div>📺 YouTube
+        </a>
+        <a href="https://www.tiktok.com/@smiledfux" class="btn tt tilt-element animate-up" style="animation-delay: 0.7s;" target="_blank" rel="noopener noreferrer">
+            <div class="glare"></div>🎵 TikTok
+        </a>
+        <a href="https://www.instagram.com/smiledfux" class="btn ig tilt-element animate-up" style="animation-delay: 0.8s;" target="_blank" rel="noopener noreferrer">
+            <div class="glare"></div>📸 Instagram
+        </a>
+        <a href="https://ko-fi.com/remosmiles" class="btn kofi tilt-element animate-up" style="animation-delay: 0.9s;" target="_blank" rel="noopener noreferrer">
+            <div class="glare"></div>🦊 Support den Fux
+        </a>
+        <a href="mailto:rem.otresch@hotmail.com" class="btn mail tilt-element animate-up" style="animation-delay: 1.0s;">
+            <div class="glare"></div>📧 Kontakt
+        </a>
         
-        <button id="share-btn" class="btn share tilt-element" style="display: none;">🔗 Seite Teilen</button>
+        <button id="share-btn" class="btn share tilt-element animate-up" style="animation-delay: 1.1s;">
+            <div class="glare"></div>🔗 Seite Teilen
+        </button>
     </nav>
 
-    <footer>
-        <p>REMOSMILES &copy; 2026 | <a href="javascript:void(0)" onclick="document.getElementById('impressum-modal').showModal()" style="color: #888; text-decoration: underline;">Impressum</a></p>
-        <p>ÜBER 1.000 ABONNENTEN - DANKE! 🎉</p>
+    <footer class="animate-up" style="animation-delay: 1.2s;">
+        <p>REMOSMILES &copy; 2026 | <a href="javascript:void(0)" onclick="document.getElementById('impressum-modal').showModal()">Impressum</a></p>
+        <p style="margin-top: 5px; color: var(--primary-neon);">ÜBER 1.000 ABONNENTEN - DANKE! 🎉</p>
     </footer>
 </main>
 
 <dialog id="impressum-modal">
-    <h2 style="color:var(--neon-cyan); margin-top:0;">Impressum</h2>
-    <p><strong>Betreiber der Website:</strong><br>
-    Remo Tresch<br>
-    Attinghauserstrasse 32<br>
-    6460 Altdorf<br>
-    Schweiz</p>
-    
-    <p><strong>Kontakt:</strong><br>
-    E-Mail: rem.otresch@hotmail.com</p>
-    
+    <h2 style="color:var(--primary-neon); margin-top:0; font-weight: 800; text-transform: uppercase;">Impressum</h2>
+    <p style="line-height: 1.6; color: #ccc;">
+        <strong>Betreiber der Website:</strong><br>
+        Remo Tresch<br>
+        Attinghauserstrasse 32<br>
+        6460 Altdorf<br>
+        Schweiz
+    </p>
+    <p style="line-height: 1.6; color: #ccc; margin-top: 15px;">
+        <strong>Kontakt:</strong><br>
+        E-Mail: rem.otresch@hotmail.com
+    </p>
     <button class="close-btn" onclick="document.getElementById('impressum-modal').close()">Schliessen</button>
 </dialog>
 
 <script>
-    // --- 1. Matrix Hintergrund & Easter Egg ---
+    // --- 1. Dynamic Theme Picker ---
+    function setTheme(color) {
+        document.documentElement.style.setProperty('--primary-neon', color);
+        // Update Pulse Animation Color dynamically
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 ${color}B3; } /* B3 is ~70% opacity */
+                70% { box-shadow: 0 0 0 6px ${color}00; }
+                100% { box-shadow: 0 0 0 0 ${color}00; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Reset matrix color to match theme
+        ctx.fillStyle = color;
+    }
+
+    // --- 2. Advanced Matrix Background ---
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
@@ -347,10 +530,13 @@
         if (time - lastTime < 1000 / fps) return;
         lastTime = time;
 
-        ctx.fillStyle = "rgba(10, 10, 10, 0.1)"; 
+        ctx.fillStyle = "rgba(5, 5, 5, 0.15)"; 
         ctx.fillRect(0, 0, width, height);
-        ctx.fillStyle = "#00f2ff";
-        ctx.font = "15px monospace";
+        
+        // Use the current CSS variable color for the matrix
+        const computedColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-neon').trim();
+        ctx.fillStyle = computedColor || "#00f2ff";
+        ctx.font = "14px 'JetBrains Mono', monospace";
         
         drops.forEach((y, i) => {
             const text = chars[Math.floor(Math.random() * chars.length)];
@@ -370,14 +556,18 @@
     fuxBild.addEventListener('click', () => {
         clickCount++;
         if(clickCount === 3) {
-            chars = "🦊🏃‍♂️🔥💯"; 
-            document.body.style.setProperty('--neon-cyan', '#ff8c00'); 
+            chars = "🦊🏃‍♂️🔥💯OSS"; 
+            setTheme('#ff8c00'); // Switch to Orange automatically
             alert("Fux-Modus aktiviert! 🦊🔥");
-            setTimeout(() => { clickCount = 0; chars = "010101🦊FOXSIEGREACH"; document.body.style.setProperty('--neon-cyan', '#00f2ff'); }, 10000);
+            setTimeout(() => { 
+                clickCount = 0; 
+                chars = "010101🦊FOXSIEGREACH"; 
+                setTheme('#00f2ff'); // Revert to Cyan
+            }, 10000);
         }
     });
 
-    // --- 2. Multi-Countdown Logik ---
+    // --- 3. Multi-Countdown Logik ---
     function startCountdown(targetDateStr, elementId, finishedText) {
         const targetDate = new Date(targetDateStr).getTime();
         const el = document.getElementById(elementId);
@@ -392,23 +582,24 @@
                 return;
             }
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
             
             el.innerHTML = `${days}T ${hours}S ${minutes}M`;
         }, 1000);
     }
 
-    // Termine setzen (Uhrzeit auf 09:00 Uhr standardisiert)
     startCountdown("Jan 31, 2027 09:00:00", "countdown-grappling", "OSS! 🥋🔥");
-    startCountdown("Oct 31, 2027 09:00:00", "countdown-marathon", "ES GEHT LOS! 🏃‍♂️💨");
+    startCountdown("Oct 31, 2027 09:00:00", "countdown-marathon", "START! 🏃‍♂️💨");
 
-    // --- 3. 3D Tilt Effekt für Buttons (Glassmorphism + Vanilla JS) ---
+    // --- 4. Advanced 3D Tilt mit dynamischem Glare (Glanz-Effekt) ---
     const tiltElements = document.querySelectorAll('.tilt-element');
     
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
         tiltElements.forEach(el => {
+            const glare = el.querySelector('.glare');
+            
             el.addEventListener('mousemove', e => {
                 const rect = el.getBoundingClientRect();
                 const x = e.clientX - rect.left;
@@ -417,19 +608,28 @@
                 const xPct = (x / rect.width) - 0.5;
                 const yPct = (y / rect.height) - 0.5;
                 
-                el.style.transform = `perspective(1000px) rotateX(${yPct * -20}deg) rotateY(${xPct * 20}deg) scale3d(1.02, 1.02, 1.02)`;
+                // Tilt
+                el.style.transform = `perspective(1000px) rotateX(${yPct * -15}deg) rotateY(${xPct * 15}deg) scale3d(1.02, 1.02, 1.02)`;
+                
+                // Glare Positionierung
+                if(glare) {
+                    const glareX = (x / rect.width) * 100;
+                    const glareY = (y / rect.height) * 100;
+                    glare.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.15) 0%, transparent 50%)`;
+                }
             });
             
             el.addEventListener('mouseleave', () => {
                 el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                if(glare) glare.style.background = `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 60%)`;
             });
         });
     }
 
-    // --- 4. Native Share API ---
+    // --- 5. Native Share API ---
     const shareBtn = document.getElementById('share-btn');
     if (navigator.share) {
-        shareBtn.style.display = 'block'; 
+        shareBtn.style.display = 'flex'; 
         shareBtn.addEventListener('click', async () => {
             try {
                 await navigator.share({

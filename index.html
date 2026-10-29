@@ -43,6 +43,8 @@
             text-align: center;
             padding: 3rem 1rem 1rem 1rem;
             z-index: 1;
+            width: 90%;
+            max-width: 450px;
         }
 
         .profile-img {
@@ -72,28 +74,39 @@
         }
 
         /* Countdown Styling */
+        .countdowns-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 15px 0 25px 0;
+            width: 100%;
+        }
+
         .countdown-container {
             background: var(--glass-bg);
             border: 1px solid var(--neon-cyan);
             border-radius: 12px;
             padding: 15px;
-            margin: 10px 0 25px 0;
             box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            display: inline-block;
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
         }
         
         .countdown-title {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--neon-cyan);
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 5px;
+            min-height: 28px; /* Sorgt dafür, dass zweizeilige Titel das Layout nicht brechen */
         }
 
-        #countdown {
-            font-size: 1.5rem;
+        .countdown-time {
+            font-size: 1.3rem;
             font-weight: bold;
             font-family: monospace;
             text-shadow: 0 0 5px var(--neon-cyan);
@@ -104,7 +117,7 @@
             max-width: 450px;
             z-index: 1;
             padding-bottom: 50px;
-            perspective: 1000px; /* Für den 3D-Effekt */
+            perspective: 1000px;
         }
 
         /* YouTube Widget Styling */
@@ -176,8 +189,8 @@
             text-transform: uppercase;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d; /* Für 3D Tilt */
-            transition: transform 0.1s, box-shadow 0.3s; /* Tilt Update ist schneller */
+            transform-style: preserve-3d;
+            transition: transform 0.1s, box-shadow 0.3s;
         }
 
         .btn:focus-visible {
@@ -262,9 +275,15 @@
     <h1>Der lächelnde Fux</h1>
     <p style="color: var(--neon-cyan); font-weight: bold; margin-bottom: 0;">Sportliche Reise 🦊</p>
     
-    <div class="countdown-container">
-        <div class="countdown-title">Lucerne Half Marathon</div>
-        <div id="countdown">Lade...</div>
+    <div class="countdowns-wrapper">
+        <div class="countdown-container">
+            <div class="countdown-title">Grappling Turnier</div>
+            <div id="countdown-grappling" class="countdown-time">Lade...</div>
+        </div>
+        <div class="countdown-container">
+            <div class="countdown-title">Lucerne Half Marathon</div>
+            <div id="countdown-marathon" class="countdown-time">Lade...</div>
+        </div>
     </div>
 </header>
 
@@ -351,37 +370,43 @@
     fuxBild.addEventListener('click', () => {
         clickCount++;
         if(clickCount === 3) {
-            chars = "🦊🏃‍♂️🔥💯"; // Ändert den Matrix-Code
-            document.body.style.setProperty('--neon-cyan', '#ff8c00'); // Macht die Seite Orange
+            chars = "🦊🏃‍♂️🔥💯"; 
+            document.body.style.setProperty('--neon-cyan', '#ff8c00'); 
             alert("Fux-Modus aktiviert! 🦊🔥");
             setTimeout(() => { clickCount = 0; chars = "010101🦊FOXSIEGREACH"; document.body.style.setProperty('--neon-cyan', '#00f2ff'); }, 10000);
         }
     });
 
-    // --- 2. Countdown Timer (25. Oktober 2026, 09:00 Uhr) ---
-    const targetDate = new Date("Oct 25, 2026 09:00:00").getTime();
-    
-    const updateCountdown = setInterval(function() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
+    // --- 2. Multi-Countdown Logik ---
+    function startCountdown(targetDateStr, elementId, finishedText) {
+        const targetDate = new Date(targetDateStr).getTime();
+        const el = document.getElementById(elementId);
         
-        if (distance < 0) {
-            clearInterval(updateCountdown);
-            document.getElementById("countdown").innerHTML = "ES GEHT LOS! 🏃‍♂️💨";
-            return;
-        }
+        const updateCountdown = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            if (distance < 0) {
+                clearInterval(updateCountdown);
+                el.innerHTML = finishedText;
+                return;
+            }
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        
-        document.getElementById("countdown").innerHTML = `${days}T ${hours}S ${minutes}M`;
-    }, 1000);
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            
+            el.innerHTML = `${days}T ${hours}S ${minutes}M`;
+        }, 1000);
+    }
+
+    // Termine setzen (Uhrzeit auf 09:00 Uhr standardisiert)
+    startCountdown("Jan 31, 2027 09:00:00", "countdown-grappling", "OSS! 🥋🔥");
+    startCountdown("Oct 31, 2027 09:00:00", "countdown-marathon", "ES GEHT LOS! 🏃‍♂️💨");
 
     // --- 3. 3D Tilt Effekt für Buttons (Glassmorphism + Vanilla JS) ---
     const tiltElements = document.querySelectorAll('.tilt-element');
     
-    // Prüfen, ob wir auf einem Touch-Gerät sind (da brauchen wir keinen Tilt)
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
         tiltElements.forEach(el => {
             el.addEventListener('mousemove', e => {
@@ -389,7 +414,6 @@
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 
-                // Berechne die Rotation (max 10 Grad)
                 const xPct = (x / rect.width) - 0.5;
                 const yPct = (y / rect.height) - 0.5;
                 
@@ -405,7 +429,7 @@
     // --- 4. Native Share API ---
     const shareBtn = document.getElementById('share-btn');
     if (navigator.share) {
-        shareBtn.style.display = 'block'; // Nur anzeigen, wenn der Browser es unterstützt
+        shareBtn.style.display = 'block'; 
         shareBtn.addEventListener('click', async () => {
             try {
                 await navigator.share({
